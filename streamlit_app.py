@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import math
 from pathlib import Path
-from modsim import *
 from pandas import read_csv
 
 # Set the title and favicon that appear in the browser's tab bar
