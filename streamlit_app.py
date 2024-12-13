@@ -18,7 +18,7 @@ This chapter is available as a Jupyter notebook where you can read the text, run
 
 The previous chapter presents the minimal model of the glucose-insulin system and introduces a tool we need to implement it: interpolation.
 
-In this chapter, we'll implement the model two ways:
+# In this chapter, we'll implement the model two ways:
 
 We'll start by rewriting the differential equations as difference equations; then we'll solve the difference equations using a version of run_simulation similar to what we have used in previous chapters.
 
