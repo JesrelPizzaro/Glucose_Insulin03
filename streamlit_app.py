@@ -64,7 +64,7 @@ def make_system(params, data):
 
    # --------------------------------------------------------------------------------------
     def update_func(t, state, system):
-    G, X = state
+    G , X = state
     G0, k1, k2, k3 = system.params 
     I, Ib, Gb = system.I, system.Ib, system.Gb
     dt = system.dt
@@ -150,7 +150,26 @@ decorate(xlabel='Time (min)',
 diff = results.G - results2.X
 percent_diff = diff / results2.X * 100
 percent_diff.abs().describe()
-    
+
+#-----------------------------------------------------------
+# Solution
+
+system3 = system.set(dt = 1)
+results3 = run_simulation(system3, update_func)
+
+# Solution
+
+results.G.plot(style='C2--', label='simulation (dt=2)')
+results3.G.plot(style='C3:', label='simulation (dt=1)')
+
+decorate(xlabel='Time (min)',
+         ylabel='Concentration (mg/dL)')
+
+## Solution
+
+diff = results.G - results3.G
+percent_diff = diff / results3.G * 100
+percent_diff.abs().describe()
 
 
 
