@@ -118,7 +118,38 @@ def slope_func(t, state, system):
     dXdt = k3 * (I(t) - Ib) - k2 * X
     
     return dGdt, dXdt
-    
+
+results2, details = run_solve_ivp(system, slope_func,
+                                  t_eval=results.index)
+
+details.success
+
+details.message
+
+results2.head()
+
+#---------------------------------------------------------
+    results.G.plot(style='--', label='simulation')
+results2.G.plot(style='-', label='solve ivp')
+
+decorate(xlabel='Time (min)',
+         ylabel='Concentration (mg/dL)')
+
+diff = results.G - results2.G
+percent_diff = diff / results2.G * 100
+
+percent_diff.abs().describe()
+
+# -----------------------------------------------------------
+results.X.plot(style='--', label='simulation')
+results2.X.plot(style='-', label='solve ivp')
+
+decorate(xlabel='Time (min)', 
+         ylabel='Concentration (arbitrary units)')
+
+diff = results.G - results2.X
+percent_diff = diff / results2.X * 100
+percent_diff.abs().describe()
     
 
 
