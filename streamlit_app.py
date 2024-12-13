@@ -34,7 +34,7 @@ data = read_csv('glucose_insulin.csv', index_col='time');
 # Implementing the Model
 #To get started, let's assume that the parameters of the model are known. We'll implement the model and use it to generate time series for G and X. Then we'll see how we can choose parameters that make the simulation fit the data.
 
-Here are the parameters.
+# Here are the parameters.
 G0 = 270
 k1 = 0.02
 k2 = 0.02
@@ -90,6 +90,35 @@ def make_system(params, data):
         frame.iloc[i+1] = update_func(t, state, system)
     
     return frame
+
+# ------------------------------------------------------------------------
+   results = run_simulation(system, update_func)
+
+  results.head()
+
+#The following plot shows the simulated glucose levels from the model along with the measured data.
+  data.glucose.plot(style='o', alpha=0.5, label='glucose data')
+results.G.plot(style='-', color='C0', label='simulation')
+
+decorate(xlabel='Time (min)',
+         ylabel='Concentration (mg/dL)')
+#The following plot shows simulated insulin levels in the hypothetical "remote compartment", which is in unspecified units.
+results.X.plot(color='C1', label='remote insulin')
+
+decorate(xlabel='Time (min)', 
+         ylabel='Concentration (arbitrary units)')
+
+# ----------------------------------------------------------------------------
+def slope_func(t, state, system):
+    G, X = state
+    G0, k1, k2, k3 = system.params 
+    I, Ib, Gb = system.I, system.Ib, system.Gb
+        
+    dGdt = -k1 * (G - Gb) - X*G
+    dXdt = k3 * (I(t) - Ib) - k2 * X
+    
+    return dGdt, dXdt
+    
     
 
 
