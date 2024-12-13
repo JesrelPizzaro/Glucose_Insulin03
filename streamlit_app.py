@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import math
 from pathlib import Path
+from modsim import *
+from pandas import read_csv
 
 # Set the title and favicon that appear in the browser's tab bar
 st.set_page_config(
@@ -13,12 +15,16 @@ st.set_page_config(
 st.title('Glucose and Insulin Simulation')
 
 # Load the data file
-@st.cache
+@st.cache_data
 def load_data():
     file_path = 'glucose_insulin.csv'
     if not Path(file_path).exists():
         st.error("Data file 'glucose_insulin.csv' not found. Please upload it.")
-        return None
+        uploaded_file = st.file_uploader("Upload your glucose_insulin.csv file", type=["csv"])
+        if uploaded_file is not None:
+            return pd.read_csv(uploaded_file, index_col='time')
+        else:
+            return None
     return read_csv(file_path, index_col='time')
 
 data = load_data()
@@ -140,4 +146,5 @@ if details.success:
     st.pyplot(fig)
 else:
     st.error("solve_ivp failed: " + details.message)
+
 
