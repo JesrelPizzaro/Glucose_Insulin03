@@ -20,34 +20,34 @@ The previous chapter presents the minimal model of the glucose-insulin system an
 
 # In this chapter, we'll implement the model two ways:
 
-We'll start by rewriting the differential equations as difference equations; then we'll solve the difference equations using a version of run_simulation similar to what we have used in previous chapters.
+# We'll start by rewriting the differential equations as difference equations; then we'll solve the difference equations using a version of run_simulation similar to what we have used in previous chapters.
 
-Then we'll use a new SciPy function, called solve_ivp, to solve the differential equation using a better algorithm.
+# Then we'll use a new SciPy function, called solve_ivp, to solve the differential equation using a better algorithm.
 
-We'll see that solve_ivp is faster and more accurate than run_simulation. As a result, we will use it for the models in the rest of the book.
+# We'll see that solve_ivp is faster and more accurate than run_simulation. As a result, we will use it for the models in the rest of the book.
 
-The following cell downloads the data.
+# The following cell downloads the data.
 
 download('https://github.com/AllenDowney/ModSim/raw/main/data/' +
          'glucose_insulin.csv')
-We can use Pandas to read the data.
+# We can use Pandas to read the data.
 
 from pandas import read_csv
 
 data = read_csv('glucose_insulin.csv', index_col='time');
-Implementing the Model
-To get started, let's assume that the parameters of the model are known. We'll implement the model and use it to generate time series for G and X. Then we'll see how we can choose parameters that make the simulation fit the data.
+# Implementing the Model
+# To get started, let's assume that the parameters of the model are known. We'll implement the model and use it to generate time series for G and X. Then we'll see how we can choose parameters that make the simulation fit the data.
 
-Here are the parameters.
+# Here are the parameters.
 
 G0 = 270
 k1 = 0.02
 k2 = 0.02
 k3 = 1.5e-05
-I'll put these values in a sequence which we'll pass to make_system:
+# I'll put these values in a sequence which we'll pass to make_system:
 
 params = G0, k1, k2, k3
-Here's a version of make_system that takes params and data as parameters.
+# Here's a version of make_system that takes params and data as parameters.
 
 def make_system(params, data):
     G0, k1, k2, k3 = params
@@ -67,19 +67,15 @@ def make_system(params, data):
 make_system gets t_0 and t_end from the data. It uses the measurements at t=0 as the basal levels, Gb and Ib. And it uses the parameter G0 as the initial value for G. Then it packs everything into a System object.
 
 system = make_system(params, data)
-The Update Function
-The minimal model is expressed in terms of differential equations:
+# The Update Function
+# The minimal model is expressed in terms of differential equations:
 
- 
-
- 
-
-To simulate this system, we will rewrite them as difference equations. If we multiply both sides by 
+ # To simulate this system, we will rewrite them as difference equations. If we multiply both sides by 
 , we have:
 
 
 
-If we think of 
+# If we think of 
  as a small step in time, these equations tell us how to compute the corresponding changes in 
  and 
 . Here's an update function that computes these changes:
@@ -97,7 +93,7 @@ def update_func(t, state, system):
     X += dXdt * dt
 
     return State(G=G, X=X)
-As usual, the update function takes a timestamp, a State object, and a System object as parameters. The first line uses multiple assignment to extract the current values of G and X.
+# As usual, the update function takes a timestamp, a State object, and a System object as parameters. The first line uses multiple assignment to extract the current values of G and X.
 
 The following lines unpack the parameters we need from the System object.
 
