@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
+from modsim import *
+import numpy as np
 
 # Set up Streamlit page configuration
 st.set_page_config(
@@ -63,6 +64,8 @@ results = run_simulation(system, update_func)
 
 # Plot results
 fig, ax = plt.subplots(2, 1, figsize=(10, 6))
+
+# Glucose Data and Simulation
 data.glucose.plot(style='o', alpha=0.5, label='Glucose Data', ax=ax[0])
 results.G.plot(style='-', color='C0', label='Simulation', ax=ax[0])
 ax[0].set_title("Glucose Levels")
@@ -70,10 +73,16 @@ ax[0].set_xlabel("Time (min)")
 ax[0].set_ylabel("Concentration (mg/dL)")
 ax[0].legend()
 
+# Remote Insulin Simulation
 results.X.plot(color='C1', label='Remote Insulin', ax=ax[1])
 ax[1].set_title("Remote Insulin Levels")
 ax[1].set_xlabel("Time (min)")
 ax[1].set_ylabel("Concentration (arbitrary units)")
 ax[1].legend()
 
+# Display the plot
 st.pyplot(fig)
+
+# Summary
+st.subheader("Simulation Summary")
+st.write("The model simulation predicts glucose and insulin dynamics based on the provided parameters and input data.")
