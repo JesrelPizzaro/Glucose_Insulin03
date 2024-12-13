@@ -26,7 +26,6 @@ $$dX = \left[ k_3 \left[I(t) - I_b \right] - k_2 X(t) \right] dt$$
 If we think of $dt$ as a small step in time, these equations tell us how to compute the corresponding changes in $G$ and $X$.
 Here's an update function that computes these changes:
 
-If we think of  dt  as a small step in time, these equations tell us how to compute the corresponding changes in  G  and  X . Here's an update function that computes these changes.
 
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://gdp-dashboard-template.streamlit.app/)
 
